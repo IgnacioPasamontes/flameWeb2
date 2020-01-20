@@ -1,0 +1,231 @@
+<div class="row">
+    <div class="col-3">
+        <div class="row justify-content-center">
+            <div class="card w-100" style="width: 18rem;">
+                <div class="card-header"><h5>Model info</h5></div>
+                <div class="card-body">   
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr *ngFor = "let key of objectKeys(modelBuildInfo).sort()">
+                            <td class="text-left text-capitalize"  data-toggle="tooltip" data-placement="left" title="{{modelBuildInfo[key][0]}}"><strong>{{key}}</strong></td>
+                            <td class="text-right text-capitalize">{{modelBuildInfo[key][1]}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="card w-100" style="width: 18rem;">
+        <div class="card-header"><h5>Fitting</h5></div>
+        <div class="card-body"> 
+            <div class="row align-items-center">
+                <div class="col-2">
+                    <table class="table table-sm table-striped">
+                        <tbody>
+                            <tr>
+                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SensitivityPed'][0]}}"><strong>Sensitivity</strong></td>
+                                <td class="text-right text-capitalize">{{modelValidationInfo['SensitivityPed'][1]}}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SpecificityPred'][0]}}"><strong>Specificity</strong></td>
+                                <td class="text-right text-capitalize">{{modelValidationInfo['SpecificityPred'][1]}}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCCpred'][0]}}"><strong>MCC</strong></td>
+                                <td class="text-right text-capitalize">{{modelValidationInfo['MCCpred'][1]}}</td>
+                            </tr>
+                        </tbody>
+                    </table> 
+                </div>
+                <div class="col-5">
+                    <!--CONFUSION MATRIX-->
+                    <div class="container h-60 text-center mb-5 bt-3">
+                        <div class="row align-items-center justify-content-center">
+                            <div class="col-2">
+                                <div class="row">
+
+                                </div>
+                                <div class="row border-bottom border-top">
+                                    <strong>Predicted +</strong> 
+                                </div>
+                                <div class="row border-bottom">
+                                    <strong>Predicted -</strong>
+                                </div>
+                                    
+                            </div>
+                            <div class="col-6">
+                                <div class="row text-center align-middle border-bottom">
+                                    <div class="col border-right border-left">
+                                        <strong>Actual +</strong>
+                                    </div>
+                                    <div class="col border-right">
+                                        <strong>Actual -</strong>
+                                    </div>
+                                    <div class="col">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                                <div class="row border-bottom">
+                                    <div class="col border-right border-left TP">
+                                        {{this.modelValidationInfo['TPpred'][1]}} TP
+                                    </div>
+                                    <div class="col border-right FP">
+                                        {{this.modelValidationInfo['FPpred'][1]}} FP
+                                    </div>
+                                    <div class="col"> 
+                                        {{this.modelValidationInfo['TPpred'][1]+this.modelValidationInfo['FPpred'][1]}}
+                                    </div>
+                                </div>
+                                <div class="row border-bottom">
+                                    <div class="col border-right border-left FN">
+                                        {{this.modelValidationInfo['FNpred'][1]}} FN
+                                    </div>
+                                    <div class="col border-right TN">
+                                        {{this.modelValidationInfo['TNpred'][1]}} TN
+                                    </div>
+                                    <div class="col">
+                                        {{this.modelValidationInfo['FNpred'][1]+this.modelValidationInfo['TNpred'][1]}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col border-right border-left">
+                                        {{this.modelValidationInfo['TPpred'][1]+this.modelValidationInfo['FNpred'][1]}}
+                                    </div>
+                                    <div class="col border-right">
+                                        {{this.modelValidationInfo['FPpred'][1]+this.modelValidationInfo['TNpred'][1]}}
+                                    </div>
+                                    <div class="col">
+                                    {{this.modelValidationInfo['TPpred'][1]+this.modelValidationInfo['FNpred'][1]
+                                        +  this.modelValidationInfo['FPpred'][1]+this.modelValidationInfo['TNpred'][1]}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>   
+                    </div>  
+                </div>
+                <div class="col-5">
+                     <div style="display: block">
+                        <canvas baseChart
+                            [data]="polarAreaChartData2"
+                            [options]="polarChartOptions"
+                            [labels]="polarAreaChartLabels"
+                            [legend]="polarAreaLegend"
+                            [colors]="polarAreaChartColors"
+                            [chartType]="polarAreaChartType">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3" *ngIf="this.modelValidationInfo['TP']">
+    <div class="card w-100" style="width: 18rem;">
+        <div class="card-header"><h5>Prediction (cross-validation)</h5></div>
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-2">
+                    <table class="table table-sm table-striped">
+                        <tbody>
+                            <tr>
+                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Sensitivity'][0]}}"><strong>Sensitivity</strong></td>
+                                <td class="text-right text-capitalize">{{modelValidationInfo['Sensitivity'][1]}}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Specificity'][0]}}"><strong>Specificity</strong></td>
+                                <td class="text-right text-capitalize">{{modelValidationInfo['Specificity'][1]}}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCC'][0]}}"><strong>MCC</strong></td>
+                                <td class="text-right text-capitalize">{{modelValidationInfo['MCC'][1]}}</td>
+                            </tr>
+                        </tbody>
+                    </table>    
+                </div>
+                <div class="col-5">
+                    <!--CONFUSION MATRIX-->
+                    <div class="container h-60 text-center mb-5 bt-3">
+                        <div class="row align-items-center justify-content-center">
+                            <div class="col-2">
+                                <div class="row">
+
+                                </div>
+                                <div class="row border-bottom border-top">
+                                    <strong>Predicted +</strong> 
+                                </div>
+                                <div class="row border-bottom">
+                                    <strong>Predicted -</strong>
+                                </div>
+                                    
+                            </div>
+                            <div class="col-6">
+                                <div class="row text-center align-middle border-bottom">
+                                    <div class="col border-right border-left">
+                                        <strong>Actual +</strong>
+                                    </div>
+                                    <div class="col border-right">
+                                        <strong>Actual -</strong>
+                                    </div>
+                                    <div class="col">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                                <div class="row border-bottom">
+                                    <div class="col border-right border-left TP">
+                                        {{this.modelValidationInfo['TP'][1]}} TP
+                                    </div>
+                                    <div class="col border-right FP">
+                                        {{this.modelValidationInfo['FP'][1]}} FP
+                                    </div>
+                                    <div class="col"> 
+                                        {{this.modelValidationInfo['TP'][1]+this.modelValidationInfo['FP'][1]}}
+                                    </div>
+                                </div>
+                                <div class="row border-bottom">
+                                    <div class="col border-right border-left FN">
+                                        {{this.modelValidationInfo['FN'][1]}} FN
+                                    </div>
+                                    <div class="col border-right TN">
+                                        {{this.modelValidationInfo['TN'][1]}} TN
+                                    </div>
+                                    <div class="col">
+                                        {{this.modelValidationInfo['FN'][1]+this.modelValidationInfo['TN'][1]}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col border-right border-left">
+                                        {{this.modelValidationInfo['TP'][1]+this.modelValidationInfo['FN'][1]}}
+                                    </div>
+                                    <div class="col border-right">
+                                        {{this.modelValidationInfo['FP'][1]+this.modelValidationInfo['TN'][1]}}
+                                    </div>
+                                    <div class="col">
+                                    {{this.modelValidationInfo['TP'][1]+this.modelValidationInfo['FN'][1]
+                                        +  this.modelValidationInfo['FP'][1]+this.modelValidationInfo['TN'][1]}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>   
+                    </div>  
+                </div>
+                <div class="col-5">
+                     <div style="display: block">
+                        <canvas baseChart
+                                [data]="polarAreaChartData"
+                                [options]="polarChartOptions"
+                                [labels]="polarAreaChartLabels"
+                                [legend]="polarAreaLegend"
+                                [colors]="polarAreaChartColors"
+                                [chartType]="polarAreaChartType">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

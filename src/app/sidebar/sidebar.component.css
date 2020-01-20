@@ -1,0 +1,24 @@
+.sidebar {
+    min-height: 100vh;
+    padding-bottom: 10px;
+    background-color:#0076a3;
+    /*background: linear-gradient(to left, #F7F7F7 0%, #F7F7F7 100%);*/
+    background: #0076a3;
+    border-right: 5px solid #B8DCED; 
+    
+}
+
+ul {
+    background: #0076a3;
+}
+ul li a {
+    background: #0076a3;
+    color: #B8DCED;
+   
+}
+
+ul li a.active{
+    background: #22577a;
+    color: white;
+    border-bottom: 3px solid #e59300;
+}

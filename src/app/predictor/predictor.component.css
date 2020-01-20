@@ -1,0 +1,48 @@
+a:hover {
+
+    background: #E7E7E7;
+}
+
+a.active {
+    background: #EBAB39;
+    border-bottom: 2px solid #0076a3;
+}
+a {
+    
+    background:#22577a;
+    color: #f7f9ea;
+    border-bottom: 2px solid #0076a3;
+   
+}
+.wrap {
+    cursor:not-allowed;
+}
+a.disabled{
+    background:#22577a;
+    pointer-events: none;
+    color: #f7f9ea; 
+}
+.loading {
+    position: relative;
+    left: 50%;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    margin: 0 0 0 0px;
+    border: 5px solid #e6901a;
+    border-radius: 60%;
+    border-top: 5px solid #B8DCED;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 1s linear infinite;
+  }
+
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

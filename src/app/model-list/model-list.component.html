@@ -1,0 +1,94 @@
+<div class="mt-3">
+    <h2 class="text-primary text-left">Models</h2>
+</div>
+
+<hr class="my-4">
+
+<app-manage-models></app-manage-models>
+  <!-- Extra large modal -->
+<div class ="row mh-100 mt-3 ml-3 mr-3">
+  <div class="col-12 scrolltable p-0 card">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th ></th>
+          <th class="text-center" >STATE</th>
+          <th class="text-center">NAME</th>
+          <th class="text-center">VERSION</th>
+          <th class="text-center">#MOLECULES</th>
+          <th class="text-center">#VARIABLES</th>
+          <th class="text-center">TYPE</th>
+         
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let key of objectKeys(model.listModels).sort()" 
+          [ngClass]="{'selected': (model.listModels[key].name===this.model.name) && (model.listModels[key].version===this.model.version),
+                      'version': model.listModels[key].version > 0}"
+          (click)= "selectModel(model.listModels[key].name, model.listModels[key].version, model.listModels[key].trained,model.listModels[key].type)">
+          <td scope="row" class="text-left">
+
+            <button class="btn" (click)="openModal(model.listModels[key].name,model.listModels[key].version)"
+              *ngIf="model.listModels[key].type != '-'">
+                <i class="far fa-chart-bar fa-lg" title="Validation" ></i>
+            </button>
+
+            <button *ngIf="model.listModels[key].type != '-'"
+              class="btn" 
+              id ="collapse_{{model.listModels[key].name}}_{{model.listModels[key].version}}" 
+              [ngbPopover]="popContent" [popoverTitle]="popTitle"
+              placement="right"
+              [autoClose]="'inside'"
+              > <i class="far fa-eye fa-lg" title="Quality" ></i>
+            </button>
+                
+            <!-- Content poppover--> 
+            <ng-template #popTitle>Info</ng-template>   
+            <ng-template #popContent>
+              <table class="table">
+                <tbody>
+                  <tr style ="border-bottom: 2px solid #B8DCED;" *ngFor="let key2 of objectKeys(model.listModels[key].quality)">
+                    <td class="text-left"><strong>{{key2}}: </strong></td>
+                    <td class="text-right">{{model.listModels[key].quality[key2]}}</td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </ng-template>  
+
+              
+          </td>
+
+          <!--"{'background-color': style1 ? 'red' : (style2 ? 'blue' : null) }" fas fa-circle, fas fa-square -->
+          <td class="text-center" >
+          <i class = "fas" [ngClass]="{'fa-grip-lines': model.listModels[key].type.indexOf('qualitative') > -1 ||
+                                                        model.listModels[key].type.indexOf('majority') > -1,
+                        'fa-circle': model.listModels[key].type.indexOf('quantitative') >-1 ||
+                                     model.listModels[key].type.indexOf('mean') > -1 ||
+                                     model.listModels[key].type.indexOf('median') > -1,
+                        'fa-times': model.listModels[key].type == '-',
+                        'faa-flash animated': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version)}"
+                        [ngStyle]="{'color': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version) ? '#E69400' : (model.listModels[key].trained ? '#51cf66' : 'red' ) }" 
+                        aria-hidden="true"></i> 
+         
+                        
+          </td>
+          <td class="text-center" *ngIf="model.listModels[key].version === 0">{{model.listModels[key].name}}</td>
+          <td class="text-center" *ngIf="model.listModels[key].version != 0"><i class="fas fa-level-up-alt fa-rotate-90 fa-lg"></i></td>
+         
+         
+          <td class="text-center">{{model.listModels[key].version}}</td>
+          <td class="text-center">{{model.listModels[key].numMols}}</td>
+          <td class="text-center">{{model.listModels[key].variables}}</td>
+          <td class="text-capitalize text-center">{{model.listModels[key].type}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
+ 
+
+
+

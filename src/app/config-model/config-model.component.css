@@ -1,0 +1,12 @@
+.border {
+    padding: 20px;
+    background: #F7F7F7;
+    border: 1cm;
+    border-top: 1cm;
+}
+
+legend {
+    margin-bottom: 0px;
+    font-weight: bold;
+}
+  

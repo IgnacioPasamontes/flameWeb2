@@ -1,0 +1,38 @@
+<!-- Models Tab-->
+
+  <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link" id="pills-modeling-tab" data-toggle="pill" href="#pills-modeling" role="tab" aria-controls="pills-modeling" aria-selected="true" [routerLink]="['/modeling/predictions']" [class.active]="isActive('modeling')">Modeling</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-similarity-tab" data-toggle="pill" href="#pills-similarity" role="tab" aria-controls="pills-similarity" aria-selected="false" [routerLink]="['/similarity']" routerLinkActive="active">Similarity</a>
+    </li>     
+  </ul>
+  <hr class="style1 m-0">
+  <div class="tab-content mt-0" id="pills-tabContent">
+    <div class="tab-pane fade show" id="pills-modeling" role="tabpanel" aria-labelledby="pills-modeling-tab" [routerLink]="['/modeling']" routerLinkActive="active">
+      <app-modeling-sidebar></app-modeling-sidebar>
+    </div>
+    <div class="tab-pane fade" id="pills-similarity" role="tabpanel" aria-labelledby="pills-similarity-tab" [routerLink]="['/similarity']" routerLinkActive="active">
+     <app-similarity-sidebar></app-similarity-sidebar>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,26 @@
+.display-3 {
+    color: #E69400;
+}
+.main {
+    /*min-height: 100vh;*/
+    /*max-height: 90vh;*/
+    overflow: auto;
+    padding-bottom: 10px;
+    background-color:#FAFAFA;
+    /*background: linear-gradient(to left, #F7F7F7 0%, #F7F7F7 100%);*/
+    background:#FAFAFA;
+    color:#0076a3;
+}
+
+ul {
+    background: #22577a;
+}
+ul li a {
+    background: #22577a;
+    color: #B8DCED;
+}
+
+ul li a.active{
+    background: #e59300;
+    color: white;
+}

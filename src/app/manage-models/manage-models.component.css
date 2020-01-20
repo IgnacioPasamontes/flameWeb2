@@ -1,0 +1,41 @@
+a:hover {
+
+    background: #E7E7E7;
+}
+
+a.active {
+    background: #EBAB39;
+    border-bottom: 2px solid #0076a3;
+}
+a {
+    background:#22577a;
+    color: #f7f9ea;
+    border-bottom: 2px solid #0076a3;
+}
+.wrap {
+    cursor:not-allowed;
+}
+a.disabled{
+    background:#22577a;
+    pointer-events: none;
+}
+
+.actions {
+    background:#22577a;
+    background-color:#22577a;
+    color: #f7f9ea;
+    border-bottom: 2px solid #0076a3;
+}
+button.disabled {
+    cursor: not-allowed;
+    pointer-events: none !important;
+}
+
+label.disabled {
+    cursor: not-allowed;
+    pointer-events: none !important;
+}
+
+.btn{
+   min-width: 90px !important;
+}

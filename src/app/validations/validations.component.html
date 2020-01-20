@@ -1,0 +1,32 @@
+ <!--START Modal Documentation-->
+<div class="modal-header">
+    <h4 class="modal-title">Validation</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="m-3" *ngIf="this.model.parameters.quantitative.value != undefined && this.model.parameters.conformal.value != undefined">
+        <div *ngIf="!this.model.parameters.quantitative.value && !this.model.parameters.conformal.value">
+            <app-qualit-no-conformal></app-qualit-no-conformal>
+        </div>
+        <div *ngIf="!this.model.parameters.quantitative.value && this.model.parameters.conformal.value">
+            <app-qualit-conformal></app-qualit-conformal>
+        </div>
+        <div *ngIf="this.model.parameters.quantitative.value && !this.model.parameters.conformal.value">
+            <app-quantit-no-conformal></app-quantit-no-conformal>
+        </div>
+        <div *ngIf="this.model.parameters.quantitative.value && this.model.parameters.conformal.value">
+            <app-quantit-conformal></app-quantit-conformal>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>
+                
+<!--END Modal Documentation-->
+
+
+
+

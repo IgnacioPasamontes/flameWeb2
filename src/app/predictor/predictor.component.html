@@ -1,0 +1,62 @@
+<div class="d-flex align-items-start flex-column" style="height: 100%;">
+    <div class="mb-auto w-100">
+      <div id="options" class="list-group list-group-flush wrap pt-0">
+        <a class="list-group-item list-group-item-action active" data-toggle="list" role="tab" aria-controls="model" routerLink="listModel">
+          <div class="container p-0">
+            <div class="row">
+              <div class="col-12">MODELS</div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <p class="font-italic p-1 m-0" *ngIf="this.prediction.name">
+                  <i class="mr-1 fas fa-caret-right"></i> {{this.prediction.name}} v.{{this.prediction.version}}
+                  <!--<ng-container *ngIf=" this.prediction.quantitative; else qualitative">
+                    Quantitative
+                  </ng-container>
+                  <ng-template #qualitative>
+                    Qualitative
+                  </ng-template>
+                  <ng-container *ngIf="this.prediction.conformal">
+                    Conformal
+                  </ng-container>-->
+                </p>
+              </div>
+            </div>
+          </div>
+        </a>
+        <a class="list-group-item list-group-item-action" [ngClass]="{'disabled':!prediction.name}" data-toggle="list" role="tab" aria-controls="predictionseries" routerLink="predictionseries">
+          <div class="container p-0">
+            <div class="row">
+              <div class="col-12">PREDICTION SERIES</div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <p class="font-italic p-1 m-0" *ngIf="prediction.file">
+                  <i class="mr-1 fas fa-caret-right"></i>
+                  {{this.prediction.file_info['name']}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </a>
+        <a class="list-group-item list-group-item-action" data-toggle="list" role="tab" aria-controls="results" routerLink="prediction"
+            [ngClass]="{'disabled':prediction.result === undefined}">
+          <div class="container p-0 m-0">
+            <div class="w-100 row  justify-content-between">
+              <div class="col">RESULTS</div> 
+              <div class="col-2"><div [ngClass]="{ 'loading': this.prediction.predicting}" ></div></div> 
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col align-self-center">
+          <button type="button" class="btn btn-outline-light btn-block btn-lg"
+          [ngClass]="{'disabled': prediction.file === undefined || !prediction.trained}" 
+                  (click)="predict()">Predict</button>
+        </div>
+      </div>
+    </div>
+  </div>

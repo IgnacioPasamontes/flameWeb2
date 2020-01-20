@@ -1,0 +1,75 @@
+<div class="d-flex align-items-start flex-column" style="height: 100%;">
+    <div class="mb-auto w-100">
+      <div id="options" class="list-group list-group-flush wrap pt-0">
+        <a class="list-group-item list-group-item-action active" data-toggle="list" role="tab" aria-controls="model" routerLink="listModel">
+          <div class="container p-0">
+            <div class="row">
+              <div class="col-12">MODELS</div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <p class="font-italic p-1 m-0" *ngIf="this.model.name">
+                  <i class="mr-1 fas fa-caret-right"></i> {{this.model.name}} v.{{this.model.version}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </a>
+        <a class="list-group-item list-group-item-action" [ngClass]="{'disabled':!model.name}" data-toggle="list" role="tab" aria-controls="trainigserie" routerLink="trainigseries">
+          <div class="container p-0">
+            <div class="row">
+              <div class="col-12">TRAINING SERIES</div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <p class="font-italic p-1 m-0" *ngIf="model.file && this.model.file_info['name']">
+                  <i class="mr-1 fas fa-caret-right"></i>
+                  {{this.model.file_info['name']}}
+                </p>
+                <p class="font-italic p-1 m-0" *ngIf="!model.file && this.model.trained">
+                  <i class="mr-1 fas fa-caret-right"></i>
+                  (internal)
+                </p>
+              </div>
+            </div>
+          </div>
+        </a>
+        <a class="list-group-item list-group-item-action" [ngClass]="{'disabled':!model.name}" data-toggle="list" role="tab" aria-controls="parameters" routerLink="parameters">
+          <div class="container p-0">
+            <div class="row">
+              <div class="col-12">PARAMETERS</div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <p class="font-italic p-1 m-0" *ngIf="model.parameters">
+                  <i class="mr-1 fas fa-caret-right"></i> 
+                  {{this.model.parameters['model'].value}} 
+                  <ng-container *ngIf="this.model.parameters['quantitative'].value; else qualitative">
+                    Quantitative
+                  </ng-container>
+                  <ng-template #qualitative>
+                    Qualitative
+                  </ng-template>
+                  <ng-container *ngIf="this.model.parameters['conformal'].value">
+                    Conformal
+                  </ng-container>
+                </p>
+              </div>
+            </div>
+          </div>
+        </a>
+        <a class="list-group-item list-group-item-action" [ngClass]="{'disabled': !model.trained}" data-toggle="list" role="tab" aria-controls="results" routerLink="validation">
+          RESULTS
+        </a>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col align-self-center">
+          <button type="button" class="btn btn-outline-light btn-block btn-lg" 
+                  [ngClass]="{'disabled': ((model.file === undefined && model.trained === false) || model.parameters === undefined)}" 
+                  (click)="buildModel(this.model.name,this.model.version)">Build model</button>
+        </div>
+      </div>
+    </div>
+  </div>

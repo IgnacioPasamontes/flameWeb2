@@ -1,0 +1,47 @@
+#toast-container > div {
+    opacity:1;
+}
+body {
+    /*border-top: 15px solid #e59300;*/
+    /*font-family: 'Indie Flower', cursive;*/
+    font-family: 'Gayathri', sans-serif;
+    font-size: 20px;
+}
+.btn{
+    white-space:normal !important;
+}
+
+btn.bmd-btn-fab.btn-etransafe,
+.bmd-btn-fab.btn-etransafe.custom-file-control::before, 
+.btn.btn-raised.btn-etransafe, 
+.btn-raised.btn-etransafe.custom-file-control::before, 
+.btn-group-raised 
+.btn.btn-etransafe, 
+.btn-group-raised 
+.btn-etransafe.custom-file-control::before {
+    background-color: #B8DCED !important;
+    color:#22577a !important;
+}
+
+.responsive-width {
+    font-size: 3vw;
+}
+
+.bg-estransafe{
+    background: #0076a3;
+    color: white;
+}
+
+.popover-header {
+    background: #B8DCED;
+    color:#0076a3;
+    font-weight:bold;
+}
+
+.modalClass .modal-dialog {
+   
+    min-width: 70vw;
+    max-width: 70vw;
+    min-height: 90vh;
+    max-height: 90vh;
+  }

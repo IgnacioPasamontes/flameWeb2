@@ -1,0 +1,61 @@
+/* @import '../../assets/css/dataTables.material.min.css';
+@import '../../assets/css/material.min.css'; */
+
+.table th{
+    color: #22577A;
+}
+.table td {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.table td, .table th {
+    border-top: 4px solid rgba(0,0,0,.06);
+}
+
+/* rotating circle to show progress */
+
+.loading {
+    position: absolute;
+    left: 50%;
+    /* top: 50%; */ /* center vertically */
+    z-index: 1; 
+    width: 120px;
+    height: 120px;
+    /* margin: -75px 0 0 -75px; */
+    margin: 0 0 0 -60px;
+    /* border: 20px solid #f3f3f3; */
+    border: 20px solid #e6901a;
+
+    border-radius: 60%;
+    /* border-top: 20px solid #3498db; */
+    border-top: 20px solid #165379;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+  }
+
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+.TP {
+  background-color: rgba(0,255,0,0.3);
+}
+.FP {
+  background-color:rgba(235,143,3,0.3);
+}
+.TN {
+  background-color:rgba(3,49,155,0.3);
+}
+.FN {
+  background-color:rgba(255,0,0,0.3);
+}
+.card-header {
+  background: #B8DCED;
+  background-color: #B8DCED;
+}

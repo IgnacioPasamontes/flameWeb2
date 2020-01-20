@@ -1,0 +1,109 @@
+<div class="container mt-5">
+  <div class="row align-items-centermt-4">
+    <div class="col-6">
+      <div class="form-group">
+        <label for="exampleInputFile" class="bmd-label-floating">File input</label>
+        <input type="file" class="form-control-file" id="exampleInputFile" accept=".sdf" (change)="change($event.target.files)">
+        <small class="text-muted">Input search file.</small>
+      </div>
+    </div>
+    <div class="col-6 align-self-center">
+      <!--<div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
+        <label class="form-check-label" for="gridRadios1">
+          Euclidean
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+        <label class="form-check-label" for="gridRadios2">
+          Tanimoto
+        </label>
+      </div>-->
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <label for="space">Space</label>
+          <select id="space" class="form-control" [(ngModel)]="this.space" name="space"> 
+            <option *ngFor="let value of objectKeys(this.spaces)" [value]='value'>
+            {{value}}
+            </option>
+        </select>
+         <small id="space" class="text-muted">
+          Select space.
+        </small>
+      </div>
+    </div>
+    <div class="col-6"> 
+      <div class="form-group w-25">
+        <label for="dist_cutoff">Distance cutoff</label>
+        <input type="number" id="dist_cutoff" class="form-control mx-sm-1" [(ngModel)]="this.dist_cutoff" aria-describedby="dist_cutoff" min="0" max="10" step=".01">
+        <small id="dist_cutoff" class="text-muted">
+          Distance cutoff(0-10).
+        </small>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <label for="version">Version</label>
+          <select class="form-control" [(ngModel)]="this.version" name="version"> 
+              <option *ngFor="let value of this.spaces[this.space]" [value]='value'>
+              {{value}}
+              </option>
+          </select>
+           <small id="version" class="text-muted">
+          Select version.
+        </small>
+      </div> 
+    </div>
+    <div class="col-6">
+      <div class="form-group w-25">
+        <label for="num_cutoff">Number cutoff</label>
+        <input type="number" id="num_cutoff" class="form-control mx-sm-1" [(ngModel)]="this.num_cutoff" aria-describedby="num_cutoff" min="1" step="1">
+        <small id="num_cutoff" class="text-muted">
+          Number cutoff (min 1).
+        </small>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-end">
+    <div class="col">
+      <button class="btn btn-outline-primary" role="button" id="search" (click) = "search()" >Search</button>
+    </div>
+  </div>
+
+  <div class="row" *ngIf = "this.result.length > 0">
+    <div class="col-12" >
+      <h4>Similarity Results</h4>
+    </div>
+    <div class="col-12" *ngIf = "this.result.length > 0">
+      <table class="table table-fixed table-bordered table-striped" id="data-table">
+        <thead>
+          <tr>
+            <th>Index</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true" title="<span>Query column name from query test set</span>">Query name</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true" title="<span>Query molecule from query test set</span>">Query molecule</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true" title="<span>Reference column name from Reference training set</span>">Reference name</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true"  title="<span>Reference molecule column from Reference training set</span>">Reference molecule</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true"  title="<span>Similarity distance score: Tanimoto for binary descriptors and Euclidean for continues ones</span>">Similarity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let src of this.nameSrc;let i=index">
+            <tr *ngFor="let pred of this.result[i].names;let j=index">
+              <td class="align-middle" width="">{{i}} - {{j}}</td>
+              <td class="align-middle" >{{this.nameSrc[i]}}</td>
+              <td class="align-middle"><canvas #cmp id="{{'query_' + i + '_' + j}}" width="300" height="150">{{this.smileSrc[i]}}</canvas></td>
+              <td class="align-middle">{{this.result[i].names[j]}}</td>
+              <td class="align-middle"><canvas #cmp id="{{'ref_' + i + '_' + j}}" width="300" height="150">{{this.result[i].SMILES[j]}}</canvas></td>
+              <td class="align-middle">{{this.result[i].distances[j].toFixed(3)}}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>   
+    <div class="row">
+      <div class="loader" id="processing" hidden="true"></div>
+    </div>
+  </div>  
+</div>

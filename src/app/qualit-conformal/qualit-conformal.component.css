@@ -1,0 +1,16 @@
+.TP {
+    background-color: rgba(0,255,0,0.3);
+}
+.FP {
+    background-color:rgba(235,143,3,0.3);
+}
+.TN {
+    background-color: rgba(3,49,155,0.3);
+}
+.FN {
+    background-color:rgba(255,0,0,0.3);
+}
+.card-header {
+    background: #B8DCED;
+    background-color: #B8DCED;
+}

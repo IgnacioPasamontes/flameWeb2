@@ -1,0 +1,12 @@
+
+<ul class="nav flex-column" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link" id="predict-tab" data-toggle="tab" href="#predict" role="tab" aria-controls="predict" aria-selected="true" [routerLink]="['/modeling/predictions']" [class.active]="isActive('predictions')">Predictions</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="build-tab" data-toggle="tab" href="#build" role="tab" aria-controls="build" aria-selected="false" [routerLink]="['/modeling/models']" [class.active]="isActive('models')">Models</a>
+  </li>
+  <!--<li class="nav-item">
+    <a class="nav-link" id="manage-tab" data-toggle="tab" href="#manage" role="tab" aria-controls="manage" aria-selected="false" [routerLink]="['/modeling/documentation']" [class.active]="isActive('documentation')">Manage</a>
+  </li>-->
+</ul>

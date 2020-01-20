@@ -1,0 +1,43 @@
+<div class="container m-3">
+  <div class="row">
+    <div *ngIf="this.model.file_info!==undefined" class="col-4 card p-0 mb-0 mr-4">
+      <div class="card-header p-2"><h5>FILE INFO</h5></div>
+      <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-left p-1" >
+              <strong>File name: </strong> 
+            {{this.model.file_info['name']}}
+            </li>
+        <li class="list-group-item d-flex justify-content-between align-items-left p-1" >
+          <strong>Type file: </strong> 
+          {{this.model.file_info['type_file']}}
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-left p-1" >
+            <strong>Size: </strong> 
+            {{this.model.file_info['size_M']}} MB
+          </li>
+        <li class="list-group-item d-flex justify-content-between align-items-left p-1" >
+          <strong>Number of molecules: </strong> 
+          <span class="badge badge-primary badge-pill">{{this.model.file_info['num_mols']}}</span>
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="this.model.file_fields!==undefined" class="col-4 card p-0">
+      <div class="card-header p-2"><h5>SDFILE FIELDS</h5></div>
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-left p-1" *ngFor="let key of objectKeys(this.model.file_fields)">
+          <strong>{{key}}</strong>
+          <span class="badge badge-primary badge-pill">{{this.model.file_fields[key]}}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-3">
+      <label class="btn btn-outline-primary btn-lg" for="my-file-selector">
+          <input id="my-file-selector" type="file" style="display:none;" accept=".sdf" (change)="onChange($event.target.files)">
+          BROWSE FILE
+      </label>
+    </div>
+  </div> 
+</div>
