@@ -8,7 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { ModelListComponent } from './model-list/model-list.component';
 import { TrainingSeriesComponent } from './training-series/training-series.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { ParametersComponent } from './parameters/parameters.component';
 import { ValidationsComponent } from './validations/validations.component';
 import { ToastrModule } from 'ngx-toastr';
 import { Model, Prediction, Globals, Manager, Similarity } from './Globals';
@@ -35,7 +34,7 @@ import { SimilaritySidebarComponent } from './similarity-sidebar/similarity-side
 import { PredictionListComponent } from './prediction-list/prediction-list.component';
 import { ManageModelsComponent } from './manage-models/manage-models.component';
 import { ManagePredictionsComponent } from './manage-predictions/manage-predictions.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -43,7 +42,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     ModelListComponent,
     TrainingSeriesComponent,
     SidebarComponent,
-    ParametersComponent,
     ValidationsComponent,
     ConfigTrainingComponent,
     ConfigModelComponent,

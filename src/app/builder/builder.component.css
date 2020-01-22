@@ -1,22 +1,32 @@
-a:hover {
+::ng-deep .card-header[data-toggle="collapse"] button:after {
+    display: inline-block;
+    font: normal normal normal 10px/1 FontAwesome;
+    font-size: 25px;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: "\f056";
+    align-content: flex-end;
+    transform: rotate(0deg) ;
+    transition: all linear 0.25s;
+    color:#275B7D;
 
-    background: #E7E7E7;
+}   
+::ng-deep .card-header[data-toggle="collapse"].collapsed button:after {
+    
+    transform: rotate(90deg) ;
+    content: "\f055";
+}
+a{
+    text-align: end;
 }
 
-a.active {
-    background: #EBAB39;
-    border-bottom: 2px solid #0076a3;
-}
-a {
-    background:#22577a;
-    color: #f7f9ea;
-    border-bottom: 2px solid #0076a3;
-}
-.wrap {
-    cursor:not-allowed;
-}
-a.disabled{
-    background:#22577a;
+.disabledbutton {
     pointer-events: none;
-    color: #f7f9ea; 
+    opacity: 0.4;
+}
+
+.card-header {
+    background: #B8DCED;
+    background-color: #B8DCED;
 }

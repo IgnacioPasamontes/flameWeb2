@@ -29,7 +29,7 @@ export class ModelListComponent implements OnInit {
   ngOnInit() {
     this.getModelList();
   }
-  openModal(name: string, version: string){
+  openValidation(name: string, version: string){
     const modalRef = this.modalService.open(ValidationsComponent, {windowClass : "modalClass"});
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.version = version;
@@ -97,7 +97,6 @@ export class ModelListComponent implements OnInit {
     this.model.file_info = undefined;
     this.model.file_fields = undefined;
     this.model.parameters = undefined;
-    //this.getParameters();
   }
 
 }

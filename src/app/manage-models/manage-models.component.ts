@@ -6,6 +6,8 @@ import { CommonService } from '../common.service';
 import { ManagerService } from './manage-models.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../environments/environment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BuilderComponent} from '../builder/builder.component';
 
 @Component({
   selector: 'app-manage-models',
@@ -21,12 +23,19 @@ export class ManageModelsComponent implements OnInit {
               private commonService: CommonService,
               public service: ManagerService,
               public model: Model,
-              private toastr: ToastrService) { }
+              private toastr: ToastrService,
+              private modalService: NgbModal) { }
 
 
   ngOnInit() {
   }
 
+
+  buildModel(name: string, version: string){
+    const modalRef = this.modalService.open(BuilderComponent, {windowClass : 'modalClass'});
+    modalRef.componentInstance.name = name;
+    modalRef.componentInstance.version = version;
+  }
   /**
    * Creates a new model with the given name and informs the user with a toastr
    */

@@ -18,6 +18,11 @@ export class CommonService {
     return this.http.get(url);
   }
 
+  getPredictionList(): Observable<any> {
+    const url: string = environment.baseUrl_manage + 'predictions';
+    return this.http.get(url);
+  }
+
   getModel(model: string, version: string): Observable<any> {
     const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version;
     return this.http.get(url);
