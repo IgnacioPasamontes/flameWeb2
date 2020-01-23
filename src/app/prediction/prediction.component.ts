@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChildren, QueryList, ElementRef, AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { Prediction} from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import { SingleDataSet, Label } from 'ng2-charts';
 import { ChartType, ChartOptions, ChartColor} from 'chart.js';
+import { PredictionService } from './prediction.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import * as $ from 'jquery';
 import jsPDF from 'jspdf';
@@ -20,10 +22,16 @@ import * as XLSX from 'xlsx';
 })
 export class PredictionComponent implements OnInit, AfterViewInit {
 
+  @Input() predictionName;
+  objectKeys = Object.keys;
+
+
   @ViewChildren('cmp') components: QueryList<ElementRef>;
   dataTable: any;
   info = [];
   head = [];
+
+  predictionResult: any = undefined;
 
   modelBuildInfo = {};
   modelValidationInfo = {};
@@ -54,26 +62,55 @@ export class PredictionComponent implements OnInit, AfterViewInit {
 
 
 
-  constructor(public prediction: Prediction) { }
+  constructor(public prediction: Prediction,
+              public service: PredictionService,
+              public activeModal: NgbActiveModal) { }
 
   ngOnInit() {
 
-    if (this.prediction.result) {
-      // INFO ABOUT VALIDATION
-      for (const modelInfo of this.prediction.result['external-validation']) {
-        if (typeof modelInfo[2] === 'number') {
-          modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
+    this.service.getPrediction(this.predictionName).subscribe(
+      result => {
+        console.log(result);
+        this.predictionResult = result;
+        if ('external-validation' in this.predictionResult) {
+          for (const modelInfo of this.predictionResult['external-validation']) {
+            if (typeof modelInfo[2] === 'number') {
+              modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
+            }
+            if (typeof modelInfo[2] !== 'object') {
+              this.modelValidationInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
+            }
+          }
         }
-        if (typeof modelInfo[2] !== 'object') {
-          this.modelValidationInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
-        }
+        setTimeout(() => {
+          if (this.components !== undefined) {
+            this.components.forEach((child) => {
+              const options = {'width': 300, 'height': 150};
+              const smilesDrawer = new SmilesDrawer.Drawer(options);
+              SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
+                smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
+                }, function (err) {
+                  console.log(err);
+                });
+            });
+            const table = $('#predictionTable').DataTable();
+          }
+          if ('TP' in this.modelValidationInfo) {
+            this.polarAreaChartData = [this.modelValidationInfo['TP'][1], this.modelValidationInfo['FP'][1],
+            this.modelValidationInfo['TN'][1], this.modelValidationInfo['FN'][1]];
+          }
+        }, 10);
       }
-      setTimeout(() => {
-        this.polarAreaChartData = [this.modelValidationInfo['TP'][1], this.modelValidationInfo['FP'][1],
-        this.modelValidationInfo['TN'][1], this.modelValidationInfo['FN'][1]];
-      }, 50);
+    );
+  }
+
+
+  existKey(obj: {}, key:string) {
+
+    if (key in this.objectKeys(obj)) {
+      return true;
     }
-    console.log(this.modelValidationInfo);
+    return false;
   }
 
   saveEXCEL() {
@@ -109,81 +146,73 @@ export class PredictionComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.components !== undefined) {
-      this.components.forEach((child) => {
-        const options = {'width': 300, 'height': 150};
-        const smilesDrawer = new SmilesDrawer.Drawer(options);
-        SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
-          smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
-          }, function (err) {
-            console.log(err);
-          });
-      });
-    }
+
     const table: any = $('#info');
     this.dataTable = table.DataTable();
     // pdf.autoTable({html: '#info'});
     this.info = [];
     this.head = ['Name', 'Mol'];
 
-    if (this.prediction.result.ymatrix) {
-      this.head.push('Value');
-    }
-    if ( this.prediction.result.values) {
-      this.head.push('Prediction');
-    }
-    if ( this.prediction.result.upper_limit) {
-      this.head.push('Upper limit');
-    }
-    if ( this.prediction.result.lower_limit) {
-      this.head.push('Lower limit');
-    }
-    if ( this.prediction.result.c0) {
-      this.head.push('Inactive');
-    }
-    if ( this.prediction.result.c1) {
-      this.head.push('Active');
-    }
-    if ( this.prediction.result.ensemble_c0) {
-      this.head.push('Ensemble Class 0');
-    }
-    if ( this.prediction.result.ensemble_c1) {
-      this.head.push('Ensemble Class 1');
-    }
-
-
-    let prediction = [];
-    for (let i = 0; i < this.prediction.result.SMILES.length;) {
-      prediction = [];
-      prediction = [this.prediction.result.obj_nam[i], this.prediction.result.SMILES[i]];
-
-      if (this.prediction.result.ymatrix) {
-        prediction.push(this.prediction.result.ymatrix[i].toFixed(3));
+    if (this.predictionResult !== undefined) {
+      if (this.predictionResult.ymatrix) {
+        this.head.push('Value');
+      }
+      if ( this.predictionResult.values) {
+        this.head.push('Prediction');
+      }
+      if ( this.predictionResult.upper_limit) {
+        this.head.push('Upper limit');
+      }
+      if ( this.predictionResult.lower_limit) {
+        this.head.push('Lower limit');
+      }
+      if ( this.predictionResult.c0) {
+        this.head.push('Inactive');
+      }
+      if ( this.predictionResult.c1) {
+        this.head.push('Active');
+      }
+      if ( this.predictionResult.ensemble_c0) {
+        this.head.push('Ensemble Class 0');
+      }
+      if ( this.predictionResult.ensemble_c1) {
+        this.head.push('Ensemble Class 1');
       }
 
-      if (this.prediction.result.values) {
-        prediction.push(this.prediction.result.values[i].toFixed(3));
+
+      let prediction = [];
+      for (let i = 0; i < this.predictionResult.SMILES.length;) {
+        prediction = [];
+        prediction = [this.predictionResult.obj_nam[i], this.predictionResult.SMILES[i]];
+
+        if (this.predictionResult.ymatrix) {
+          prediction.push(this.predictionResult.ymatrix[i].toFixed(3));
+        }
+
+        if (this.predictionResult.values) {
+          prediction.push(this.predictionResult.values[i].toFixed(3));
+        }
+        if (this.predictionResult.upper_limit) {
+          prediction.push(this.predictionResult.upper_limit[i].toFixed(3));
+        }
+        if (this.predictionResult.lower_limit) {
+          prediction.push(this.predictionResult.lower_limit[i].toFixed(3));
+        }
+        if (this.predictionResult.c0) {
+          prediction.push(this.predictionResult.c0[i]);
+        }
+        if (this.predictionResult.c1) {
+          prediction.push(this.predictionResult.c1[i]);
+        }
+        if ( this.predictionResult.ensemble_c0) {
+          this.head.push(this.predictionResult.ensemble_c0[i].toFixed(3));
+        }
+        if ( this.predictionResult.ensemble_c1) {
+          this.head.push(this.predictionResult.ensemble_c1[i].toFixed(3));
+        }
+        this.info.push(prediction);
+        i = i + 1;
       }
-      if (this.prediction.result.upper_limit) {
-        prediction.push(this.prediction.result.upper_limit[i].toFixed(3));
-      }
-      if (this.prediction.result.lower_limit) {
-        prediction.push(this.prediction.result.lower_limit[i].toFixed(3));
-      }
-      if (this.prediction.result.c0) {
-        prediction.push(this.prediction.result.c0[i]);
-      }
-      if (this.prediction.result.c1) {
-        prediction.push(this.prediction.result.c1[i]);
-      }
-      if ( this.prediction.result.ensemble_c0) {
-        this.head.push(this.prediction.result.ensemble_c0[i].toFixed(3));
-      }
-      if ( this.prediction.result.ensemble_c1) {
-        this.head.push(this.prediction.result.ensemble_c1[i].toFixed(3));
-      }
-      this.info.push(prediction);
-      i = i + 1;
     }
   }
 }

@@ -1,6 +1,12 @@
-<div class="m-3">
+<div class="modal-header">
+    <h4 class="modal-title">Prediction</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
   <div class="row"> 
-    <div class="col-11 p-0" *ngIf="(this.prediction.result != undefined) && (prediction.result['external-validation'])">
+    <div class="col p-0" *ngIf="(this.predictionResult != undefined) && (this.predictionResult['external-validation'])">
       <div class="card w-100" style="width: 18rem;">
         <div class="card-header"><h5>External Validation</h5></div>
         <div class="card-body">
@@ -8,16 +14,17 @@
             <div class="col-2">
               <table class="table table-sm table-striped">
                 <tbody>
-                  <tr *ngFor = "let res of prediction.result['external-validation']">
+                  <tr *ngFor = "let res of this.predictionResult['external-validation']">
                     <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{res[1]}}"><strong>{{res[0]}}</strong></td>
                     <td class="text-right text-capitalize">{{res[2]}}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <div class="col-5 p-0" *ngIf="(prediction.result != undefined) && (prediction.result['external-validation']) && (!prediction.quantitative)">
+                                                                                                                                  <!--Check if is quantitative-->
+            <div class="col p-0" *ngIf="(this.predictionResult != undefined) && (this.predictionResult['external-validation']) && (existKey(this.modelValidationInfo,'TP'))">
               <!--CONFUSION MATRIX-->
-              <div class="container h-60 text-center mb-5 bt-3">
+              <div class="container">
                 <div class="row align-items-center justify-content-center">
                   <div class="col-2">
                     <div class="row">
@@ -81,7 +88,8 @@
                 </div>
               </div>  
             </div>
-            <div class="col-4" *ngIf="(prediction.result != undefined) && (prediction.result['external-validation']) && (!prediction.quantitative)">
+                                                                                                                                <!--Check if is quantitative-->
+            <div class="col-4" *ngIf="(this.predictionResult != undefined) && (this.predictionResult['external-validation']) && (existKey(this.modelValidationInfo,'TP'))">
               <div style="display: block">
                 <canvas baseChart
                     [data]="polarAreaChartData"
@@ -99,58 +107,63 @@
     </div>
   </div>
   
-  <div class="row justify-content-center m-3" *ngIf="(prediction.result != undefined) && (prediction.result.warning)">
-    <div class=" col-10">
+  <div class="row" *ngIf="(this.predictionResult != undefined) && (this.predictionResult.warning)">
+    <div class="col-10">
       <div class="alert alert-danger text-center" role="alert">
-          {{prediction.result.warning}}
+          {{this.predictionResult.warning}}
       </div>
     </div>
   </div>
-  <div class="row justify-content-end mr-3" *ngIf="prediction.result != undefined">
-    <div class="col-2 align-self-end">
-      <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-raised btn-etransafe" (click)="savePDF()"><i class="far fa-file-pdf"></i>  PDF</button>
-        <button type="button" class="btn btn-raised btn-etransafe" (click)="saveEXCEL()"><i class="fas fa-file-excel"></i>  Excel</button>
-      </div>
+  <div class="container mt-3 mb-3">
+    <div class="d-flex flex-row-reverse" *ngIf="this.predictionResult != undefined">
+     
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-raised btn-etransafe" (click)="savePDF()"><i class="far fa-file-pdf"></i>  PDF</button>
+          <button type="button" class="btn btn-raised btn-etransafe" (click)="saveEXCEL()"><i class="fas fa-file-excel"></i>  Excel</button>
+        </div>
+      
     </div>
-  </div>
-  <div class="row">
-    <div class="card col-11 pt-3">
-      <table id="info" class="table table-fixed table-bordered table-striped m-0 table-light" *ngIf="prediction.result != undefined">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th >Name</th>
-            <th class="align-middle text-center">Mol</th>
-            <th class="align-middle text-center" *ngIf="prediction.result.ymatrix">Value</th>
-            <th class="align-middle text-center" *ngIf="prediction.result.values">Prediction</th>
-            <th class="align-middle text-center" *ngIf="prediction.result.upper_limit">Upper limit</th>
-            <th class="align-middle text-center" *ngIf="prediction.result.lower_limit">Lower limit</th>
-            <th class="align-middle text-center" *ngIf="prediction.result.c0">Inactive</th>
-            <th class="align-middle text-center" *ngIf="prediction.result.c1">Active</th>
-            <th class="align-middle text-center" *ngIf="prediction.result.ensemble_c0">Ensemble Class 0</th>
-            <th class="align-middle text-center" *ngIf="prediction.result.ensemble_c1">Ensemble Class 1</th>
+    <div class="row mt-3">
+      <div class="col">
+        <table id="predictionTable" class="table table-fixed table-bordered table-striped m-0 table-light" *ngIf="this.predictionResult != undefined">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th >Name</th>
+              <th class="align-middle text-center">Mol</th>
+              <th class="align-middle text-center" *ngIf="this.predictionResult.ymatrix">Value</th>
+              <th class="align-middle text-center" *ngIf="this.predictionResult.values">Prediction</th>
+              <th class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">Upper limit</th>
+              <th class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">Lower limit</th>
+              <th class="align-middle text-center" *ngIf="this.predictionResult.c0">Inactive</th>
+              <th class="align-middle text-center" *ngIf="this.predictionResult.c1">Active</th>
+              <th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">Ensemble Class 0</th>
+              <th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c1">Ensemble Class 1</th>
 
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let res of prediction.result.SMILES; let i=index">
-            <td class="align-middle">{{i}}</td>
-            <td class="align-middle" >{{prediction.result.obj_nam[i]}}</td>
-            <td class="align-middle text-center">
-              <canvas #cmp id="{{prediction.result.obj_nam[i]}}">{{prediction.result.SMILES[i]}}</canvas>
-          </td>
-            <td class="align-middle text-center" *ngIf="prediction.result.ymatrix" >{{prediction.result.ymatrix[i].toFixed(3)}}</td>
-            <td class="align-middle text-center" *ngIf="prediction.result.values">{{prediction.result.values[i].toFixed(3)}}</td>
-            <td class="align-middle text-center" *ngIf="prediction.result.upper_limit">{{prediction.result.upper_limit[i].toFixed(3)}}</td>
-            <td class="align-middle text-center" *ngIf="prediction.result.lower_limit">{{prediction.result.lower_limit[i].toFixed(3)}}</td>
-            <td class="align-middle text-center" *ngIf="prediction.result.c0">{{prediction.result.c0[i]}}</td>
-            <td class="align-middle text-center" *ngIf="prediction.result.c1">{{prediction.result.c1[i]}}</td>
-            <td class="align-middle text-center" *ngIf="prediction.result.ensemble_c0">{{prediction.result.ensemble_c0[i].toFixed(3)}}</td>
-            <td class="align-middle text-center" *ngIf="prediction.result.ensemble_c1">{{prediction.result.ensemble_c1[i].toFixed(3)}}</td>
-          </tr>
-        </tbody>
-      </table>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let res of this.predictionResult.SMILES; let i=index">
+              <td class="align-middle">{{i}}</td>
+              <td class="align-middle" >{{this.predictionResult.obj_nam[i]}}</td>
+              <td class="align-middle text-center">
+                <canvas #cmp id="{{this.predictionResult.obj_nam[i]}}">{{this.predictionResult.SMILES[i]}}</canvas>
+              </td>
+              <td class="align-middle text-center" *ngIf="this.predictionResult.ymatrix" >{{this.predictionResult.ymatrix[i].toFixed(3)}}</td>
+              <td class="align-middle text-center" *ngIf="this.predictionResult.values">{{this.predictionResult.values[i].toFixed(3)}}</td>
+              <td class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">{{this.predictionResult.upper_limit[i].toFixed(3)}}</td>
+              <td class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">{{this.predictionResult.lower_limit[i].toFixed(3)}}</td>
+              <td class="align-middle text-center" *ngIf="this.predictionResult.c0">{{this.predictionResult.c0[i]}}</td>
+              <td class="align-middle text-center" *ngIf="this.predictionResult.c1">{{this.predictionResult.c1[i]}}</td>
+              <td class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">{{this.predictionResult.ensemble_c0[i].toFixed(3)}}</td>
+              <td class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c1">{{this.predictionResult.ensemble_c1[i].toFixed(3)}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>

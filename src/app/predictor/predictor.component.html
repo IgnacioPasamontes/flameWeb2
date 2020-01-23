@@ -5,39 +5,56 @@
   </button>
 </div>
 <div class="modal-body">
-  <div class="container mt-5">
-    <div class="row align-items-centermt-4">
-      <div class="form-group">
-        <label for="exampleInputFile" class="bmd-label-floating">File input</label>
-        <input type="file" class="form-control-file" id="exampleInputFile" accept=".sdf" (change)="change($event.target.files)">
-        <small class="text-muted">Input search file.</small>
+  <div class="container mt-1">
+    <div class="row">
+      <div class="col-8">
+        <label for="predictionName">Prediction name</label>
+        <input type="text" class="form-control is-invalid" [class.is-valid]="isvalid"  [class.is-invalid]="!isvalid"
+         id="predictionName" [(ngModel)]="predictName"  (ngModelChange)="predictNameChange()" required>
+        <div class="valid-feedback">
+          Valid Name!
+        </div>
+        <div class="invalid-feedback">
+          The name of the prediction is invalid or already exist!
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputFile" class="bmd-label-floating">File input</label>
+          <input type="file" class="form-control-file" id="exampleInputFile" accept=".sdf" (change)="change($event.target.files)">
+          <small class="text-muted">Input search file.</small>
+        </div>
       </div>
     </div>
     <div class="row">
-      <div class="form-group">
-        <label for="model">Model</label>
-          <select id="model" class="form-control" [(ngModel)]="this.modelName" name="modelName"> 
-            <option *ngFor="let value of objectKeys(this.models)" [value]='value'>
-            {{value}}
-            </option>
-        </select>
-          <small id="model" class="text-muted">
-          Select model.
-        </small>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group">
-        <label for="version">Version</label>
-          <select class="form-control" [(ngModel)]="this.version" name="version"> 
-              <option *ngFor="let value of this.models[this.modelName]" [value]='value'>
+      <div class="col -8">
+        <div class="form-group">
+          <label for="model">Model</label>
+            <select id="model" class="form-control" [(ngModel)]="this.modelName" name="modelName"> 
+              <option *ngFor="let value of objectKeys(this.models)" [value]='value'>
               {{value}}
               </option>
           </select>
-            <small id="version" class="text-muted">
-          Select version.
-        </small>
-      </div> 
+            <small id="model" class="text-muted">
+            Select model.
+          </small>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group">
+          <label for="version">Version</label>
+            <select class="form-control" [(ngModel)]="this.version" name="version"> 
+                <option *ngFor="let value of this.models[this.modelName]" [value]='value'>
+                {{value}}
+                </option>
+            </select>
+              <small id="version" class="text-muted">
+            Select version.
+          </small>
+        </div>
+      </div>
     </div>
   </div>
 </div>

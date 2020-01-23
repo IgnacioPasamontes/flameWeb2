@@ -27,6 +27,8 @@ export class Prediction {
     name: string = undefined;   // Name of the model selected in the first step
     version: string = undefined; // Version of the model selected in the first step
     trained = false; // Model is already trained
+    predictions = [];
+    currentPredictions = [];
     quantitative = false;
     conformal = false;
     file: any = undefined;  // Name of file uploaded in the second step

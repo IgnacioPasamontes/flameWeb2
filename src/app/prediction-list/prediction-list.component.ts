@@ -1,5 +1,8 @@
 import { Component, OnInit, OnChanges, DoCheck, AfterViewInit} from '@angular/core';
 import { CommonService } from '../common.service';
+import { Prediction } from '../Globals';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PredictionComponent } from '../prediction/prediction.component';
 import 'jquery';
 //import 'datatables.net-bs4';
 declare var $: any;
@@ -11,8 +14,10 @@ declare var $: any;
 })
 export class PredictionListComponent implements OnInit, DoCheck, AfterViewInit{
 
-  predictions: Array<any> = undefined;
-  constructor(private commonService: CommonService,) {}
+ 
+  constructor(private commonService: CommonService,
+              public prediction: Prediction,
+              private modalService: NgbModal) {}
 
     ngOnInit() {
       this.getPredictionList();
@@ -24,11 +29,15 @@ export class PredictionListComponent implements OnInit, DoCheck, AfterViewInit{
       },200);
     }
 
-    getPredictionList() {
+    openPredcition(predictionName: string) {
+      const modalRef = this.modalService.open(PredictionComponent, {windowClass : 'modalClass'});
+      modalRef.componentInstance.predictionName = predictionName;
+    }
 
+    getPredictionList() {
       this.commonService.getPredictionList().subscribe(
           result => {
-            this.predictions = result;
+            this.prediction.predictions = result;
             const table = $('#dataTable').DataTable();
           },
           error => {
@@ -39,12 +48,8 @@ export class PredictionListComponent implements OnInit, DoCheck, AfterViewInit{
     ngDoCheck(): void {
       const table = $('#dataTable').DataTable();
       $('#dataTable tbody').on( 'click', 'tr', function () {
-        if ( $(this).hasClass('selected') ) {
-          $(this).removeClass('selected');
-        } else {
-          table.$('tr.selected').removeClass('selected');
-          $(this).addClass('selected');
-        }
-      } );
+        $('tr').removeClass('selected'); // removes all highlights from tr's
+        $(this).addClass('selected'); // adds the highlight to this row
+      });
     }
 }
