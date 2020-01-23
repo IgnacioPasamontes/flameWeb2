@@ -5,7 +5,7 @@
 <hr class="my-4">
 
 <app-manage-predictions></app-manage-predictions>
-<div class="ml-3">
+<div class="ml-3" *ngIf="predictions !== undefined">
   <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
     <thead>
       <tr>
@@ -25,7 +25,7 @@
         <th>Date</th>
       </tr>
     </tfoot>
-    <tbody *ngIf="predictions !== undefined">
+    <tbody>
       <tr *ngFor="let info of predictions">
         <td>{{info[0]}}</td>
         <td>{{info[1]}}</td>

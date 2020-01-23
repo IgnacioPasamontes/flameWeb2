@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import 'jquery';
 import 'datatables.net-bs4';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Model, Globals, Prediction, Manager } from '../Globals';
+import { PredictorComponent} from '../predictor/predictor.component';
 declare var $: any;
 
 @Component({
@@ -10,9 +13,13 @@ declare var $: any;
 })
 export class ManagePredictionsComponent implements OnInit {
 
-  constructor() { }
+  constructor( private modalService: NgbModal) { }
 
   ngOnInit() {
+  }
+
+  newPrediction(){
+    const modalRef = this.modalService.open(PredictorComponent,{size: 'lg'});
   }
 
   delete() {

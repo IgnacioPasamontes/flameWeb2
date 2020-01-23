@@ -9,6 +9,7 @@ import { PredictionComponent } from './prediction/prediction.component';
 import { SimilarityComponent, } from './similarity/similarity.component';
 import { BuilderComponent, } from './builder/builder.component';
 import { PredictionListComponent } from './prediction-list/prediction-list.component';
+import { PredictorComponent } from './predictor/predictor.component';
 
 const routes: Routes = [
   /*{
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'modeling/models', component: ModelListComponent },
   { path: 'trainigseries', component: TrainingSeriesComponent },
   { path: 'validation', component: ValidationsComponent },
+  { path: 'predictor', component: PredictorComponent },
   { path: 'builder', component: BuilderComponent },
   { path: 'predictionseries', component: PredictionSeriesComponent },
   { path: 'prediction', component: PredictionComponent },

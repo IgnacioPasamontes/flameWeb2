@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnChanges, DoCheck} from '@angular/core';
+import { Component, OnInit, OnChanges, DoCheck, AfterViewInit} from '@angular/core';
 import { CommonService } from '../common.service';
 import 'jquery';
 //import 'datatables.net-bs4';
@@ -9,7 +9,7 @@ declare var $: any;
   templateUrl: './prediction-list.component.html',
   styleUrls: ['./prediction-list.component.css']
 })
-export class PredictionListComponent implements OnInit, DoCheck {
+export class PredictionListComponent implements OnInit, DoCheck, AfterViewInit{
 
   predictions: Array<any> = undefined;
   constructor(private commonService: CommonService,) {}
@@ -18,14 +18,18 @@ export class PredictionListComponent implements OnInit, DoCheck {
       this.getPredictionList();
     }
 
+    ngAfterViewInit() {
+      setTimeout(() => {
+        const table = $('#dataTable').DataTable();
+      },200);
+    }
 
     getPredictionList() {
 
       this.commonService.getPredictionList().subscribe(
           result => {
-            $('#dataTable').DataTable();
             this.predictions = result;
-            alert('getPredictionList');
+            const table = $('#dataTable').DataTable();
           },
           error => {
             alert(error.message);
@@ -33,7 +37,6 @@ export class PredictionListComponent implements OnInit, DoCheck {
       );
     }
     ngDoCheck(): void {
-      alert('DoCheck');
       const table = $('#dataTable').DataTable();
       $('#dataTable tbody').on( 'click', 'tr', function () {
         if ( $(this).hasClass('selected') ) {
