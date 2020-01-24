@@ -33,3 +33,7 @@ tr.selected {
 .table tbody tr:hover {
     background: #f7f9ea;
 }
+
+.blink {
+  text-decoration-line: blink;
+  }

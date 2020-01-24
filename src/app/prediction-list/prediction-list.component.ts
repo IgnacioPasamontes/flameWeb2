@@ -4,7 +4,7 @@ import { Prediction } from '../Globals';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PredictionComponent } from '../prediction/prediction.component';
 import 'jquery';
-//import 'datatables.net-bs4';
+// import 'datatables.net-bs4';
 declare var $: any;
 
 @Component({
@@ -12,9 +12,10 @@ declare var $: any;
   templateUrl: './prediction-list.component.html',
   styleUrls: ['./prediction-list.component.css']
 })
-export class PredictionListComponent implements OnInit, DoCheck, AfterViewInit{
+export class PredictionListComponent implements OnInit, DoCheck, AfterViewInit {
 
- 
+  objectKeys = Object.keys;
+
   constructor(private commonService: CommonService,
               public prediction: Prediction,
               private modalService: NgbModal) {}
@@ -23,7 +24,7 @@ export class PredictionListComponent implements OnInit, DoCheck, AfterViewInit{
       this.getPredictionList();
     }
 
-    selectPrediction(name: string){
+    selectPrediction(name: string) {
       this.prediction.name = name;
 
     }

@@ -7,7 +7,6 @@ import { PredictionService } from './prediction.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import 'jquery';
-//import 'datatables.net-bs4';
 declare var $: any;
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -107,7 +106,7 @@ export class PredictionComponent implements OnInit, AfterViewInit {
   }
 
 
-  existKey(obj: {}, key:string) {
+  existKey(obj: {}, key: string) {
 
     if (key in this.objectKeys(obj)) {
       return true;
@@ -125,7 +124,7 @@ export class PredictionComponent implements OnInit, AfterViewInit {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
     /* save to file */
-    XLSX.writeFile(wb, this.prediction.name + 'v.' + this.prediction.version + '_' +this.prediction.file_info['name'] + '.xlsx');
+    XLSX.writeFile(wb, this.prediction.name  + '.xlsx');
   }
   savePDF() {
 
@@ -144,7 +143,7 @@ export class PredictionComponent implements OnInit, AfterViewInit {
         3: {columnWidth: 10, halign: 'center'},
       }
     });
-    pdf.save(this.prediction.name + 'v.' + this.prediction.version + '_' +this.prediction.file_info['name'] + '.pdf');
+    pdf.save(this.prediction.name + '.pdf');
   }
 
   ngAfterViewInit() {

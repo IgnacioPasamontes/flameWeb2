@@ -33,7 +33,7 @@ export class PredictorComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.models = {};
     this.getModelList();
-    for (let name of this.prediction.predictions) {
+    for (const name of this.prediction.predictions) {
       this.predictionsNames[name[0]] = true;
       }
   }
@@ -77,19 +77,43 @@ export class PredictorComponent implements OnInit, OnChanges {
         }
     );
   }
+
+  getPredictionList() {
+    this.commonService.getPredictionList().subscribe(
+        result => {
+          this.prediction.predictions = result;
+          // const table = $('#dataTable').DataTable();
+        },
+        error => {
+          alert(error.message);
+        }
+    );
+  }
+
   ngOnChanges() {
     $('#options a:first-child').tab('show'); // Select first tab
   }
 
   predict() {
     this.activeModal.close('Close click');
-    const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictName ,{
+    const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictName , {
       disableTimeOut: true, positionClass: 'toast-top-right'});
-    this.prediction.predicting[this.predictName] = [this.version, this.file.name, this.predictName];
+    this.prediction.predicting[this.predictName] = [this.modelName, this.version, this.file.name];
+
     this.service.predict(this.modelName, this.version, this.file, this.predictName).subscribe(
       result => {
-        this.prediction.result = result;
-        this.checkPrediction(this.predictName, inserted, );
+        let iter = 0;
+        const intervalId = setInterval(() => {
+          if (iter < 15) {
+            this.checkPrediction(this.predictName, inserted, intervalId);
+          } else {
+            clearInterval(intervalId);
+            this.toastr.clear(inserted.toastId);
+            this.toastr.error( 'Prediction ' + name + ' \n ' , 'ERROR!', {
+            timeOut: 10000, positionClass: 'toast-top-right'});
+          }
+          iter += 1;
+        }, 10000);
       },
       error => {
         alert('Error prediction');
@@ -99,25 +123,17 @@ export class PredictorComponent implements OnInit, OnChanges {
 
    // Periodic function to check model
    checkPrediction(name, inserted, intervalId) {
-    this.commonService.get(name).subscribe(
+    this.commonService.getPrediction(name).subscribe(
       result => {
-          
-          
-          const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
-          if (index > -1) {
-            this.model.trainig_models.splice(index, 1);
-          }
-          this.toastr.clear(inserted.toastId);
-          this.model.listModels[name + '-' + version] = {name: name, version: version, trained: true,
-          numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['model'], quality: quality};
-          this.model.trained_models.push(name + ' .v' + version);
-          this.toastr.success('Model ' + name + '.v' + version + ' created' , 'MODEL CREATED', {
-            timeOut: 5000, positionClass: 'toast-top-right'});
-          clearInterval(intervalId);
-          this.getModelList();
+        alert('Acaboooo');
+        this.toastr.clear(inserted.toastId);
+        this.toastr.success('Prediction ' + name + ' created' , 'PREDICTION CREATED', {
+          timeOut: 5000, positionClass: 'toast-top-right'});
+        clearInterval(intervalId);
+        this.getPredictionList();
       },
       error => { // CHECK MAX iterations
-      
+        alert('Nooooooo');
       }
     );
   }

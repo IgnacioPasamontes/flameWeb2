@@ -28,6 +28,16 @@
       </tr>
     </tfoot>
     <tbody>
+        <tr *ngFor="let key of objectKeys(this.prediction.predicting)">
+            <td>
+              
+            </td>
+            <td ><p class="blink">{{key}}</p></td>
+            <td>{{this.prediction.predicting[key][0]}}</td>
+            <td>{{this.prediction.predicting[key][1]}}</td>
+            <td>{{this.prediction.predicting[key][2].substring(this.prediction.predicting[key][2].lastIndexOf('/') + 1)}}</td>
+            <td>-</td>         
+          </tr>
       <tr *ngFor="let info of this.prediction.predictions" (click)= "selectPrediction(info[0])">
         <td>
            <button class="btn" (click)="openPredcition(info[0])">

@@ -28,6 +28,11 @@ export class CommonService {
     return this.http.get(url);
   }
 
+  getPrediction(predictionName: string): Observable<any> {
+    const url: string = environment.baseUrl_manage + 'prediction/' + predictionName;
+    return this.http.get(url);
+  }
+
    /**
    * @param modelname The model name to recieve parameters
    * Version will be automatically set to 'dev'

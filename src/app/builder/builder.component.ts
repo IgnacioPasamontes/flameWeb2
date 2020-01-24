@@ -79,8 +79,7 @@ export class BuilderComponent implements OnInit {
         const intervalId = setInterval(() => {
           if (iter < 15) {
             this.checkModel(name, version, inserted, intervalId);
-          }
-          else {
+          } else {
             clearInterval(intervalId);
             const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
             if (index > -1) {
