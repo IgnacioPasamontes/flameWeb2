@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Model } from '../Globals';
 import { BuilderService } from './builder.service';
 import { CommonService } from '../common.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 
 @Component({
@@ -11,19 +12,30 @@ declare var $: any;
   templateUrl: './builder.component.html',
   styleUrls: ['./builder.component.css']
 })
-export class BuilderComponent implements OnInit, OnChanges {
+export class BuilderComponent implements OnInit {
 
   constructor(public model: Model,
     private service: BuilderService,
     private commonService: CommonService,
     private router: Router,
-    private toastr: ToastrService ) { }
+    private toastr: ToastrService,
+    public activeModal: NgbActiveModal ) { }
 
-  @Input() tabChange;
   ngOnInit() {
+    this.getParameters();
   }
-  ngOnChanges() {
-    $('#options a:first-child').tab('show'); // Select first tab
+  getParameters(): void {
+    this.commonService.getParameters(this.model.name, this.model.version).subscribe(
+      result => {
+        this.model.parameters = result;
+      },
+      error => {
+        alert(error.status + ' : ' + error.statusText);
+      },
+      () => { // when subscribe finishes
+        // console.log('actual parameters.yaml \n', parameters);
+      }
+    );
   }
 
   private isDict(v) {
@@ -59,7 +71,7 @@ export class BuilderComponent implements OnInit, OnChanges {
     this.model.trainig_models.push(name + '-' + version);
     const inserted = this.toastr.info('Running!', 'Model ' + name + '.v' + version , {
       disableTimeOut: true, positionClass: 'toast-top-right'});
-
+    this.activeModal.close('Close click');
     this.service.buildModel().subscribe(
       result => {
         this.getModelList();
@@ -93,7 +105,7 @@ export class BuilderComponent implements OnInit, OnChanges {
         this.getModelList();
       }
     );
-    this.router.navigate(['/']);
+    this.router.navigate(['/modeling/models']);
   }
 
 

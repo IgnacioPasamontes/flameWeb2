@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import 'jquery';
 import 'datatables.net-bs4';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CommonService } from '../common.service';
+import { Prediction } from '../Globals';
+import { ToastrService } from 'ngx-toastr';
+import { ManagePredictionsService } from './manage-predictions.service';
+import { PredictorComponent} from '../predictor/predictor.component';
+import { Router } from '@angular/router';
 declare var $: any;
 
 @Component({
@@ -10,15 +17,49 @@ declare var $: any;
 })
 export class ManagePredictionsComponent implements OnInit {
 
-  constructor() { }
+  constructor( private commonService: CommonService,
+              private modalService: NgbModal,
+              private toastr: ToastrService,
+              private service: ManagePredictionsService,
+              private prediction: Prediction,
+              private router: Router) { }
 
   ngOnInit() {
   }
 
-  delete() {
-    const table = $('#dataTable').DataTable();
-    table.row('.selected').remove().draw( false );
+  newPrediction() {
+    const modalRef = this.modalService.open(PredictorComponent, { size: 'lg'});
+  }
 
+  getPredictionList() {
+    this.commonService.getPredictionList().subscribe(
+        result => {
+          this.prediction.predictions = result;
+          const table = $('#dataTable').DataTable();
+        },
+        error => {
+          alert(error.message);
+        }
+    );
+  }
+
+  deletePrediction() {
+    const table = $('#dataTable').DataTable();
+    table.row('.selected').remove();
+  
+    this.service.deletePrediction(this.prediction.name).subscribe(
+      result => {
+        this.toastr.success( 'Prediction ' + this.prediction.name + ' deleted', 'DELETED' , {
+          timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
+        });
+        this.getPredictionList();
+      },
+      error => {
+          this.toastr.error(error.error.error, 'ERROR', {
+            timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
+          });
+      }
+    );
     // CALL API TO DELTE PREDICTION
   }
 }

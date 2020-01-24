@@ -1,69 +1,90 @@
-<div class="d-flex align-items-start flex-column" style="height: 100%;">
-    <div class="mb-auto w-100">
-      <div id="options" class="list-group list-group-flush wrap pt-0">
-        <a class="list-group-item list-group-item-action active" data-toggle="list" role="tab" aria-controls="model" routerLink="listModel">
-          <div class="container p-0">
-            <div class="row">
-              <div class="col-12">MODELS</div>
-            </div>
-            <div class="row">
-              <div class="col-12">
-                <p class="font-italic p-1 m-0" *ngIf="this.model.name">
-                  <i class="mr-1 fas fa-caret-right"></i> {{this.model.name}} v.{{this.model.version}}
-                </p>
-              </div>
-            </div>
-          </div>
-        </a>
-        <a class="list-group-item list-group-item-action" [ngClass]="{'disabled':!model.name}" data-toggle="list" role="tab" aria-controls="trainigserie" routerLink="trainigseries">
-          <div class="container p-0">
-            <div class="row">
-              <div class="col-12">TRAINING SERIES</div>
-            </div>
-            <div class="row">
-              <div class="col-12">
-                <p class="font-italic p-1 m-0" *ngIf="model.file && this.model.file_info['name']">
-                  <i class="mr-1 fas fa-caret-right"></i>
-                  {{this.model.file_info['name']}}
-                </p>
-                <p class="font-italic p-1 m-0" *ngIf="!model.file && this.model.trained">
-                  <i class="mr-1 fas fa-caret-right"></i>
-                  (internal)
-                </p>
-              </div>
-            </div>
-          </div>
-        </a>
-        <a class="list-group-item list-group-item-action" [ngClass]="{'disabled':!model.name}" data-toggle="list" role="tab" aria-controls="parameters" routerLink="parameters">
-          <div class="container p-0">
-            <div class="row">
-              <div class="col-12">PARAMETERS</div>
-            </div>
-            <div class="row">
-              <div class="col-12">
-                <p class="font-italic p-1 m-0" *ngIf="model.parameters">
-                  <i class="mr-1 fas fa-caret-right"></i> 
-                  {{this.model.parameters['model'].value}} 
-                  <ng-container *ngIf="this.model.parameters['quantitative'].value; else qualitative">
-                    Quantitative
-                  </ng-container>
-                  <ng-template #qualitative>
-                    Qualitative
-                  </ng-template>
-                  <ng-container *ngIf="this.model.parameters['conformal'].value">
-                    Conformal
-                  </ng-container>
-                </p>
-              </div>
-            </div>
-          </div>
-        </a>
-        <a class="list-group-item list-group-item-action" [ngClass]="{'disabled': !model.trained}" data-toggle="list" role="tab" aria-controls="results" routerLink="validation">
-          RESULTS
-        </a>
+<div class="modal-header">
+    <h4 class="modal-title">Build</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+  <div class="accordion m-3" *ngIf="this.model.parameters!==undefined">
+    <!--START CARD CONFIG TRAIN-->
+
+    <!-- END CONFIG TRAIN-->
+
+    <div class="card">
+      <div class="card-header" id="headingZero" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+        <h5 class="mb-0">
+            1 - Training Serie
+          <button class="btn btn-link pt-0 pb-0 float-right"  type="button" >
+          </button>
+        </h5>
+        
+      </div>
+  
+      <div #trainigseries id="collapseZero" class="collapse show" aria-labelledby="headingZero" >
+        <div class="card-body p-2 pl-5 pr-5">
+            <app-training-series></app-training-series>
+        </div>
       </div>
     </div>
-    <div class="container">
+
+    <!--START CARD CONFIG TRAIN-->
+    <div class="card">
+      <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <h5 class="mb-0">
+            2 - Input
+          <button class="btn btn-link pt-0 pb-0 float-right"  type="button" >
+          </button>
+        </h5>
+        
+      </div>
+  
+      <div #trainigseries id="collapseOne" class="collapse show" aria-labelledby="headingOne" >
+        <div class="card-body p-2 pl-5 pr-5">
+            <app-config-training></app-config-training>
+        </div>
+      </div>
+    </div>
+    <!-- END CONFIG TRAIN-->
+    <!--START CARD CONFIG MODEL-->
+    <div class="card">
+      <div class="card-header collapsed" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        <h5 class="mb-0">
+            3 - Learner
+          <button class="btn btn-link pt-0 pb-0 float-right"  type="button">
+          </button>
+        </h5>
+      </div>
+      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" >
+        <div class="card-body p-2 pl-5 pr-5">
+          <app-config-model></app-config-model>
+        </div>
+      </div>
+    </div>
+    <!-- END CONFIG MODEL-->
+    <!--START CARD CONFIG PREFERENCES-->
+    <div class="card">
+      <div class="card-header collapsed" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        <h5 class="mb-0">
+            4 - Preferences
+          <button class="btn btn-link pt-0 pb-0 float-right" type="button">
+          </button>
+        </h5>
+      </div>
+      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" >
+        <div class="card-body p-2 pl-5 pr-5">
+          <app-config-preferences></app-config-preferences>
+        </div>
+      </div>
+    </div>
+    <!-- END CONFIG PREFERENCES-->
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary btn-lg" (click)="activeModal.close('Close click')">Close</button>
+  <button type="button" class="btn btn-outline-primary btn-lg" (click)="buildModel(this.model.name, this.model.version)">Build</button>
+</div>
+  
+    <!--<div class="container">
       <div class="row justify-content-center">
         <div class="col align-self-center">
           <button type="button" class="btn btn-outline-light btn-block btn-lg" 
@@ -71,5 +92,4 @@
                   (click)="buildModel(this.model.name,this.model.version)">Build model</button>
         </div>
       </div>
-    </div>
-  </div>
+    </div>-->

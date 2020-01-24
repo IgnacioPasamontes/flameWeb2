@@ -28,7 +28,7 @@
           (click)= "selectModel(model.listModels[key].name, model.listModels[key].version, model.listModels[key].trained,model.listModels[key].type)">
           <td scope="row" class="text-left">
 
-            <button class="btn" (click)="openModal(model.listModels[key].name,model.listModels[key].version)"
+            <button class="btn" (click)="openValidation(model.listModels[key].name,model.listModels[key].version)"
               *ngIf="model.listModels[key].type != '-'">
                 <i class="far fa-chart-bar fa-lg" title="Validation" ></i>
             </button>

@@ -1,14 +1,16 @@
+i {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
 .table {
     background-color: white;
     /*background: linear-gradient(to left, #F7F7F7 0%, #F7F7F7 100%);*/
     background: white;
     color: #22577A;
     /*border: 1px solid;*/
-    
    /* max-height: 80vh;*/
     /*overflow-y: scroll;*/
-    
-    
 }
 .table th{
     padding-left: 1px;
@@ -22,7 +24,9 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     border-bottom: 2px solid #B8DCED;
 }
-
+tr {
+    cursor: pointer;
+}
 tr.selected {
     background: #f7f9ea;
 }

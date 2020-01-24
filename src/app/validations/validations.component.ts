@@ -12,7 +12,7 @@ export class ValidationsComponent implements OnInit {
   @Input() name;
   @Input() version;
 
-  constructor(public model: Model, 
+  constructor(public model: Model,
               private commonService: CommonService,
               public activeModal: NgbActiveModal) { }
 

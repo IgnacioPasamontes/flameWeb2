@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ManagerService } from './manage-models.service';
+import { ManageModelService } from './manage-models.service';
 
-describe('ManagerService', () => {
+describe('ManageModelService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: ManagerService = TestBed.get(ManagerService);
+    const service: ManageModelService = TestBed.get(ManageModelService);
     expect(service).toBeTruthy();
   });
 });

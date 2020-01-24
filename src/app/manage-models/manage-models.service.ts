@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class ManagerService {
+export class ManageModelService {
 
   constructor(private http: HttpClient, private manager: Manager) { }
 
