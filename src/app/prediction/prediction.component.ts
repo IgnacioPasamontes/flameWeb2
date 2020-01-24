@@ -6,7 +6,9 @@ import { ChartType, ChartOptions, ChartColor} from 'chart.js';
 import { PredictionService } from './prediction.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import * as $ from 'jquery';
+import 'jquery';
+//import 'datatables.net-bs4';
+declare var $: any;
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 

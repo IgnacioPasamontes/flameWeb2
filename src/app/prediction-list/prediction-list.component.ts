@@ -23,6 +23,11 @@ export class PredictionListComponent implements OnInit, DoCheck, AfterViewInit{
       this.getPredictionList();
     }
 
+    selectPrediction(name: string){
+      this.prediction.name = name;
+
+    }
+
     ngAfterViewInit() {
       setTimeout(() => {
         const table = $('#dataTable').DataTable();

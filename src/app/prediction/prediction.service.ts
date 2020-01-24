@@ -12,7 +12,7 @@ export class PredictionService {
 
 
   getPrediction(predictionName: string): Observable<any> {
-    const url: string = environment.baseUrl_manage + 'predictions/predictionName/' + predictionName;
+    const url: string = environment.baseUrl_manage + 'prediction/' + predictionName;
     return this.http.get(url);
   }
 }

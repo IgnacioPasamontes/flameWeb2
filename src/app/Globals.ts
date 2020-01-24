@@ -25,17 +25,11 @@ export class Model {
 @Injectable()
 export class Prediction {
     name: string = undefined;   // Name of the model selected in the first step
-    version: string = undefined; // Version of the model selected in the first step
-    trained = false; // Model is already trained
     predictions = [];
-    currentPredictions = [];
-    quantitative = false;
+    predicting = {};
     conformal = false;
     file: any = undefined;  // Name of file uploaded in the second step
-    file_info = undefined; // Info file ej. num mols, variables
-    file_fields = undefined;
     result = undefined;
-    predicting = false;
 }
 
 @Injectable()

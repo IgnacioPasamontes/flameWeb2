@@ -28,10 +28,9 @@
       </tr>
     </tfoot>
     <tbody>
-      <tr *ngFor="let info of this.prediction.predictions">
+      <tr *ngFor="let info of this.prediction.predictions" (click)= "selectPrediction(info[0])">
         <td>
-           <button class="btn" (click)="openPredcition(info[0])"
-              >
+           <button class="btn" (click)="openPredcition(info[0])">
                 <i class="far fa-chart-bar fa-lg" title="Prediction" ></i>
             </button>
         </td>

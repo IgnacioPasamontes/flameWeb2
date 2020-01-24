@@ -82,13 +82,14 @@ export class PredictorComponent implements OnInit, OnChanges {
   }
 
   predict() {
-    this.prediction.predicting = true;
-    this.activeModal.close('Close click')
+    this.activeModal.close('Close click');
+    const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictName ,{
+      disableTimeOut: true, positionClass: 'toast-top-right'});
+    this.prediction.predicting[this.predictName] = [this.version, this.file.name, this.predictName];
     this.service.predict(this.modelName, this.version, this.file, this.predictName).subscribe(
       result => {
         this.prediction.result = result;
-        //this.router.navigate(['/modeling/prediction']);
-        this.prediction.predicting = false;
+        this.checkPrediction(this.predictName, inserted, );
       },
       error => {
         alert('Error prediction');
@@ -97,21 +98,11 @@ export class PredictorComponent implements OnInit, OnChanges {
   }
 
    // Periodic function to check model
-   checkPrediction(name, version, inserted, intervalId) {
-    this.commonService.getModel(name, version).subscribe(
+   checkPrediction(name, inserted, intervalId) {
+    this.commonService.get(name).subscribe(
       result => {
-          const dict_info = {};
-          for (const info of result) {
-            dict_info[info[0]] = info[2];
-          }
-          const quality = {};
-          for (const info of (Object.keys(dict_info))) {
-            if ( (info !== 'nobj') && (info !== 'nvarx') && (info !== 'model') // HARCODED: NEED TO IMPROVE
-                && (info !== 'Conformal_interval_medians' ) && (info !== 'Conformal_prediction_ranges' )
-                && (info !== 'Y_adj' ) && (info !== 'Y_pred' )) {
-                  quality[info] =  parseFloat(dict_info[info].toFixed(3));
-            }
-          }
+          
+          
           const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
           if (index > -1) {
             this.model.trainig_models.splice(index, 1);
@@ -126,8 +117,7 @@ export class PredictorComponent implements OnInit, OnChanges {
           this.getModelList();
       },
       error => { // CHECK MAX iterations
-       this.model.listModels[name + '-' + version] = {name: name, version: version, trained: false, numMols: '-',
-          variables: '-', type: '-', quality: {}};
+      
       }
     );
   }

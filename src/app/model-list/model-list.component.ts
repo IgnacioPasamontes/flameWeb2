@@ -1,8 +1,7 @@
-import { Component, OnInit , ViewContainerRef, ViewChild, ElementRef, ANALYZE_FOR_ENTRY_COMPONENTS} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../common.service';
 import { ModelListService } from './model-list.service';
-import { Model, Globals, Prediction, Manager } from '../Globals';
-import { ToastrService } from 'ngx-toastr';
+import { Model } from '../Globals';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ValidationsComponent} from '../validations/validations.component';
 
@@ -15,12 +14,7 @@ export class ModelListComponent implements OnInit {
 
   constructor(private service: ModelListService,
     private commonService: CommonService,
-    private viewRef: ViewContainerRef,
     public model: Model,
-    public prediction: Prediction,
-    public globals: Globals,
-    public manage: Manager,
-    private toastr: ToastrService,
     private modalService: NgbModal) {}
 
   models: Array<any>;

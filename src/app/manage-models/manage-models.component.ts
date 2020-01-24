@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ViewChild, ViewContainerRef, ComponentFactoryResolver,
-  ComponentRef, ComponentFactory } from '@angular/core';
 import { Manager, Model } from '../Globals';
 import { CommonService } from '../common.service';
-import { ManagerService } from './manage-models.service';
+import { ManageModelService } from './manage-models.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -21,7 +19,7 @@ export class ManageModelsComponent implements OnInit {
 
   constructor(public manage: Manager,
               private commonService: CommonService,
-              public service: ManagerService,
+              public service: ManageModelService,
               public model: Model,
               private toastr: ToastrService,
               private modalService: NgbModal) { }
@@ -31,7 +29,7 @@ export class ManageModelsComponent implements OnInit {
   }
 
 
-  buildModel(name: string, version: string){
+  buildModel(name: string, version: string) {
     const modalRef = this.modalService.open(BuilderComponent, {windowClass : 'modalClass'});
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.version = version;
