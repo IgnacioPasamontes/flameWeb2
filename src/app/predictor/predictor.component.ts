@@ -1,10 +1,11 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Prediction, Model } from '../Globals';
 import { CommonService } from '../common.service';
 import { PredictorService } from './predictor.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import 'jquery';
 declare var $: any;
 
 @Component({
@@ -12,7 +13,7 @@ declare var $: any;
   templateUrl: './predictor.component.html',
   styleUrls: ['./predictor.component.css']
 })
-export class PredictorComponent implements OnInit, OnChanges {
+export class PredictorComponent implements OnInit {
 
   objectKeys = Object.keys;
   models: {};
@@ -82,16 +83,15 @@ export class PredictorComponent implements OnInit, OnChanges {
     this.commonService.getPredictionList().subscribe(
         result => {
           this.prediction.predictions = result;
-          // const table = $('#dataTable').DataTable();
+          setTimeout(() => {
+            const table = $('#dataTable').DataTable();
+            table.order(4, 'desc');
+          }, 100);
         },
         error => {
           alert(error.message);
         }
     );
-  }
-
-  ngOnChanges() {
-    $('#options a:first-child').tab('show'); // Select first tab
   }
 
   predict() {
@@ -111,6 +111,8 @@ export class PredictorComponent implements OnInit, OnChanges {
             this.toastr.clear(inserted.toastId);
             this.toastr.error( 'Prediction ' + name + ' \n ' , 'ERROR!', {
             timeOut: 10000, positionClass: 'toast-top-right'});
+            delete this.prediction.predicting[this.predictName];
+            this.getPredictionList();
           }
           iter += 1;
         }, 10000);
@@ -125,15 +127,15 @@ export class PredictorComponent implements OnInit, OnChanges {
    checkPrediction(name, inserted, intervalId) {
     this.commonService.getPrediction(name).subscribe(
       result => {
-        alert('Acaboooo');
+        console.log(result);
         this.toastr.clear(inserted.toastId);
         this.toastr.success('Prediction ' + name + ' created' , 'PREDICTION CREATED', {
           timeOut: 5000, positionClass: 'toast-top-right'});
         clearInterval(intervalId);
+        delete this.prediction.predicting[this.predictName];
         this.getPredictionList();
       },
       error => { // CHECK MAX iterations
-        alert('Nooooooo');
       }
     );
   }

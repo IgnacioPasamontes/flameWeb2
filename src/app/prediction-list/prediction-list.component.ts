@@ -1,8 +1,9 @@
-import { Component, OnInit, OnChanges, DoCheck, AfterViewInit} from '@angular/core';
+import { Component, OnInit, AfterViewInit} from '@angular/core';
 import { CommonService } from '../common.service';
 import { Prediction } from '../Globals';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PredictionComponent } from '../prediction/prediction.component';
+import { Router } from '@angular/router';
 import 'jquery';
 // import 'datatables.net-bs4';
 declare var $: any;
@@ -12,7 +13,7 @@ declare var $: any;
   templateUrl: './prediction-list.component.html',
   styleUrls: ['./prediction-list.component.css']
 })
-export class PredictionListComponent implements OnInit, DoCheck, AfterViewInit {
+export class PredictionListComponent implements OnInit {
 
   objectKeys = Object.keys;
 
@@ -29,12 +30,6 @@ export class PredictionListComponent implements OnInit, DoCheck, AfterViewInit {
 
     }
 
-    ngAfterViewInit() {
-      setTimeout(() => {
-        const table = $('#dataTable').DataTable();
-      },200);
-    }
-
     openPredcition(predictionName: string) {
       const modalRef = this.modalService.open(PredictionComponent, {windowClass : 'modalClass'});
       modalRef.componentInstance.predictionName = predictionName;
@@ -44,18 +39,17 @@ export class PredictionListComponent implements OnInit, DoCheck, AfterViewInit {
       this.commonService.getPredictionList().subscribe(
           result => {
             this.prediction.predictions = result;
-            const table = $('#dataTable').DataTable();
+            setTimeout(() => {
+              const table = $('#dataTable').DataTable();
+              $('#dataTable tbody').on( 'click', 'tr', function () {
+                $('tr').removeClass('selected'); // removes all highlights from tr's
+                $(this).addClass('selected'); // adds the highlight to this row
+              });
+            }, 100);
           },
           error => {
             alert(error.message);
           }
       );
-    }
-    ngDoCheck(): void {
-      const table = $('#dataTable').DataTable();
-      $('#dataTable tbody').on( 'click', 'tr', function () {
-        $('tr').removeClass('selected'); // removes all highlights from tr's
-        $(this).addClass('selected'); // adds the highlight to this row
-      });
     }
 }

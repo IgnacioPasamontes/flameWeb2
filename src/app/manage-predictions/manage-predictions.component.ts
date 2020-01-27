@@ -31,28 +31,15 @@ export class ManagePredictionsComponent implements OnInit {
     const modalRef = this.modalService.open(PredictorComponent, { size: 'lg'});
   }
 
-  getPredictionList() {
-    this.commonService.getPredictionList().subscribe(
-        result => {
-          this.prediction.predictions = result;
-          const table = $('#dataTable').DataTable();
-        },
-        error => {
-          alert(error.message);
-        }
-    );
-  }
-
   deletePrediction() {
     const table = $('#dataTable').DataTable();
-    table.row('.selected').remove();
-  
+    table.row('.selected').remove().draw(false);
+
     this.service.deletePrediction(this.prediction.name).subscribe(
       result => {
-        this.toastr.success( 'Prediction ' + this.prediction.name + ' deleted', 'DELETED' , {
+        this.toastr.success( 'Prediction "' + this.prediction.name + '" deleted', 'DELETED' , {
           timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
         });
-        this.getPredictionList();
       },
       error => {
           this.toastr.error(error.error.error, 'ERROR', {
@@ -60,6 +47,5 @@ export class ManagePredictionsComponent implements OnInit {
           });
       }
     );
-    // CALL API TO DELTE PREDICTION
   }
 }

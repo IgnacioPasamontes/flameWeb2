@@ -35,5 +35,8 @@ tr.selected {
 }
 
 .blink {
-  text-decoration-line: blink;
-  }
+    animation: blinker 0.6s linear infinite;
+}
+@keyframes blinker {  
+    100% { opacity: 0; }
+}

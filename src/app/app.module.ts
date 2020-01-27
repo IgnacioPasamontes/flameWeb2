@@ -72,7 +72,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgMultiSelectDropDownModule.forRoot(),
     ChecklistModule,
     ChartsModule,
-    DataTableModule,
     NgbModule
 
   ],
