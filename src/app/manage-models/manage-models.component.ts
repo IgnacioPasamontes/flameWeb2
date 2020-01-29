@@ -139,34 +139,31 @@ export class ManageModelsComponent implements OnInit {
     this.commonService.getModelList().subscribe(
         result => {
           // result = JSON.parse(result[1]);
+          this.model.trained_models = [];
           for (const model of result) {
-            const modelName = model.text;
-            for ( const versionInfo of model.nodes) {
-              let version = versionInfo.text;
-              // CAST VERSION
-              version = version.replace('ver', '');
-              version = (version === 'dev') ? '0' : version;
-              version = Number(version);
+            const modelName = model.modelname;
+            for ( const version of model.versions) {
               // INFO OF EACH MODEL
               this.commonService.getModel(modelName, version).subscribe(
                 result2 => {
-                  const dict_info = {};
-                  for ( const info of result2) {
-                    dict_info[info[0]] = info[2];
-                  }
-                  const quality = {};
-                  for ( const info of (Object.keys(dict_info))) {
-                    if ( (info !== 'nobj') && (info !== 'nvarx') && (info !== 'model') // HARCODED: NEED TO IMPROVE
-                        && (info !== 'Conformal_interval_medians' ) && (info !== 'Conformal_prediction_ranges' )
-                        && (info !== 'Y_adj' ) && (info !== 'Y_pred' )) {
-                          quality[info] =  parseFloat(dict_info[info].toFixed(3));
+                    const dict_info = {};
+                    for (const info of result2) {
+                      dict_info[info[0]] = info[2];
                     }
-                  }
-                  this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: true,
-                  numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['model'], quality: quality};
+                    const quality = {};
+                    for (const info of (Object.keys(dict_info))) {
+                      if ( (info !== 'nobj') && (info !== 'nvarx') && (info !== 'model') // HARCODED: NEED TO IMPROVE
+                          && (info !== 'Conformal_interval_medians' ) && (info !== 'Conformal_prediction_ranges' )
+                          && (info !== 'Y_adj' ) && (info !== 'Y_pred' )) {
+                            quality[info] =  parseFloat(dict_info[info].toFixed(3));
+                      }
+                    }
+                    this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: true,
+                    numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['model'], quality: quality};
+                    this.model.trained_models.push(modelName + ' .v' + version);
                 },
-                error => { // Not trained
-                  this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: false, numMols: '-',
+                error => {
+                 this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: false, numMols: '-',
                     variables: '-', type: '-', quality: {}};
                 }
               );

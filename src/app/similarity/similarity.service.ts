@@ -16,6 +16,12 @@ export class SimilarityService {
     const url: string = environment.baseUrl_smanage + 'spaces';
     return this.http.get(url);
   }
+
+  getSearch(label: string): Observable<any> {
+    const url: string = environment.baseUrl_smanage + 'search/' + label;
+    return this.http.get(url);
+  }
+
   search(space_name: string, version: string, num_cutoff: string, dist_cutoff: string): Observable<any> {
     const formData = new FormData();
     formData.append('SDF', this.similarity.file);

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChildren, QueryList, ElementRef, AfterViewInit} 
 import { Similarity } from '../Globals';
 import { SimilarityService} from './similarity.service';
 import * as SmilesDrawer from 'smiles-drawer';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-similarity',
@@ -14,14 +15,16 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
   dist_cutoff = '0.7';
 
   constructor(public similarity: Similarity,
-    private service: SimilarityService) { }
+    private service: SimilarityService,
+    private toastr: ToastrService) { }
 
   @ViewChildren('cmp') components: QueryList<ElementRef>;
   objectKeys = Object.keys;
   fileContent: any;
   spaces: {};
-  space: string = 'Space1';
-  version: string = 'dev';
+  space: string;
+  version: string;
+  predicting = false;
   result = [];
   smileSrc = [];
   nameSrc = [];
@@ -32,9 +35,9 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
     this.service.getSpaces().subscribe(
       result => {
         for (const space of result) {
-          this.spaces[space.text] = [];
-          for (const nodes of space.nodes) {
-            this.spaces[space.text].push(nodes.text);
+          this.spaces[space.spacename] = [];
+          for (const version of space.versions) {
+            this.spaces[space.spacename].push(version);
 
           }
         }
@@ -48,26 +51,48 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
   }
   search() {
      // CAST VERSION
-    this.version = this.version.replace('ver', '');
-    this.version = (this.version === 'dev') ? '0' : this.version;
     this.result = [];
     this.nameSrc = [];
     this.smileSrc = [];
+    this.predicting = true;
     this.service.search(this.space, this.version, this.num_cutoff, this.dist_cutoff).subscribe(
-      result => {
-        this.result = result.search_results;
-        this.nameSrc = result.obj_nam;
-        this.smileSrc = result.SMILES;
+      result => { let iter = 0;
+        console.log(result);
+        const intervalId = setInterval(() => {
+          if (iter < 15) {
+            this.checkSearch(result, intervalId);
+          } else {
+            clearInterval(intervalId);
+          }
+          iter += 1;
+        }, 4000);
+        // this.result = result.search_results;
+        // this.nameSrc = result.obj_nam;
+        // this.smileSrc = result.SMILES;
       },
       error => {
-        console.log(error.message);
-        alert(error.status);
         alert(error.message);
       }
     );
   }
 
- 
+
+
+  checkSearch(searchName, intervalId) {
+    this.service.getSearch(searchName).subscribe(
+      result => {
+        this.result = result.search_results;
+        this.nameSrc = result.obj_nam;
+        this.smileSrc = result.SMILES;
+        clearInterval(intervalId);
+      },
+      error => {
+        console.log(error.message);
+      }
+    );
+  }
+
+
   public change(fileList: FileList): void {
     const file = fileList[0];
     this.similarity.file = file;

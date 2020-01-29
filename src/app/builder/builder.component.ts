@@ -114,13 +114,8 @@ export class BuilderComponent implements OnInit {
         result => {
           // result = JSON.parse(result[1]);
           for (const model of result) {
-            const modelName = model.text;
-            for ( const versionInfo of model.nodes) {
-              let version = versionInfo.text;
-              // CAST VERSION
-              version = version.replace('ver', '');
-              version = (version === 'dev') ? '0' : version;
-              version = Number(version);
+            const modelName = model.modelname;
+            for ( const version of model.versions) {
               // INFO OF EACH MODEL
               this.commonService.getModel(modelName, version).subscribe(
                 result2 => {
