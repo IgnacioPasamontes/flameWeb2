@@ -23,7 +23,6 @@ import { QuantitNoConformalComponent } from './quantit-no-conformal/quantit-no-c
 import { QuantitConformalComponent } from './quantit-conformal/quantit-conformal.component';
 import { BuilderComponent } from './builder/builder.component';
 import { PredictorComponent } from './predictor/predictor.component';
-import { PredictionSeriesComponent } from './prediction-series/prediction-series.component';
 import { PredictionComponent } from './prediction/prediction.component';
 import { DataTableModule } from 'angular-6-datatable';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -52,7 +51,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     QuantitConformalComponent,
     BuilderComponent,
     PredictorComponent,
-    PredictionSeriesComponent,
     PredictionComponent,
     SimilarityComponent,
     ModelingSidebarComponent,
