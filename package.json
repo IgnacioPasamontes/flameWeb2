@@ -42,7 +42,7 @@
     "font-awesome": "^4.7.0",
     "font-awesome-animation": "^0.2.1",
     "jquery": "^3.4.1",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "jspdf-autotable": "^3.2.11",
     "ng-multiselect-dropdown": "^0.2.10",
     "ng2-charts": "^2.3.0",
